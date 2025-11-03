@@ -1,0 +1,234 @@
+table Requisicoes
+	lineageTag: 392a0afa-ac6e-43e1-8656-193522e657d1
+
+	measure 'Total de atendiemntos' = SUM(Requisicoes[Quantidade_Atendida])
+		formatString: 0
+		lineageTag: 2a8d6ecc-6808-4752-bbfa-1ac130892402
+
+	measure 'Total de Solicitações' = SUM(Requisicoes[Quantidade_Solicitada])
+		formatString: 0
+		lineageTag: 698e9d30-8635-4759-8768-102d6585effe
+
+	measure '% de conversão em atendimento' = DIVIDE([Total de atendiemntos],[Total de Solicitações],0)
+		formatString: 0
+		lineageTag: f27da4c8-d586-4ced-bd66-2dde610d29c9
+
+	measure 'Tempo Medio de Atendimento' = AVERAGE(Requisicoes[Tempo de Atendimento])
+		formatString: 0.00
+		lineageTag: 3055fe96-8971-48d7-942a-c08465330042
+
+	measure 'Tempo Medio de Liberação' = AVERAGE(Requisicoes[Tempo de Liberação])
+		lineageTag: 703023f8-2aec-4903-80e3-df8f5a876be5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Tempo Medio de Execução' = AVERAGE(Requisicoes[Tempo de Execução])
+		lineageTag: d320cd4e-35ce-4295-b242-447c22eee581
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ID_Requisicao
+		dataType: string
+		lineageTag: dab59157-8330-4fdd-9658-1f4d77c171a0
+		summarizeBy: none
+		sourceColumn: ID_Requisicao
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data_Requisicao
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cb20a712-3ba3-4504-8259-e3819bb6e9c8
+		summarizeBy: none
+		sourceColumn: Data_Requisicao
+
+		variation Variation
+			isDefault
+			relationship: 1c9b256b-5e68-486c-a720-a9cc8a596e2f
+			defaultHierarchy: LocalDateTable_8e679b7a-c38c-4197-8a88-06709c98edb3.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Atendente
+		dataType: string
+		lineageTag: 9748cc4a-e198-4508-8384-f445f1441e39
+		summarizeBy: none
+		sourceColumn: Atendente
+
+		annotation SummarizationSetBy = Automatic
+
+	column ID_Produto
+		dataType: string
+		lineageTag: 8eb3df09-5687-4ce2-9668-de02a536b50a
+		summarizeBy: none
+		sourceColumn: ID_Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Filial
+		dataType: string
+		lineageTag: fc1f842c-dd0a-4e0b-98e2-117015bb1bff
+		summarizeBy: none
+		sourceColumn: Filial
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantidade_Solicitada
+		dataType: int64
+		formatString: 0
+		lineageTag: a87c5123-7536-4f66-8164-1e6a8b2ba864
+		summarizeBy: sum
+		sourceColumn: Quantidade_Solicitada
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantidade_Atendida
+		dataType: int64
+		formatString: 0
+		lineageTag: b6ec87f7-5734-435a-8ee2-ee4f7f17762d
+		summarizeBy: sum
+		sourceColumn: Quantidade_Atendida
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantidade_Pendente
+		dataType: int64
+		formatString: 0
+		lineageTag: 314b9600-5a7b-4aeb-8190-0039ebd307bb
+		summarizeBy: sum
+		sourceColumn: Quantidade_Pendente
+
+		annotation SummarizationSetBy = Automatic
+
+	column Motivo_Nao_Atendimento
+		dataType: string
+		lineageTag: 4979c61d-d635-40d3-9816-108d6206a40a
+		summarizeBy: none
+		sourceColumn: Motivo_Nao_Atendimento
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnoMes
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: fd09b195-601c-46e6-adf3-96061d2a3d2c
+		summarizeBy: none
+		sourceColumn: AnoMes
+
+		variation Variation
+			isDefault
+			relationship: a8d2158d-36ed-4bc7-aab0-bc9724ef81f9
+			defaultHierarchy: LocalDateTable_8dddbfdb-82a2-42d8-9e21-a47fd27f33f3.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Cliente
+		dataType: string
+		lineageTag: 0fd4d393-68d3-4ef2-bbe4-0a0c0758432a
+		summarizeBy: none
+		sourceColumn: Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Liberacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 597db7df-93cb-4dbf-bd16-1e3bf6832292
+		summarizeBy: none
+		sourceColumn: DataHora_Liberacao
+
+		variation Variation
+			isDefault
+			relationship: cdeac614-b783-4ce8-b7f4-3ef038dfe4ea
+			defaultHierarchy: LocalDateTable_3adf3662-f2d3-442b-8da3-daf45ff5e419.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Criacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b17ba55e-d3cd-4f02-afc2-1ca57349658e
+		summarizeBy: none
+		sourceColumn: DataHora_Criacao
+
+		variation Variation
+			isDefault
+			relationship: 148825e8-f5ba-4add-bf5e-717178c19724
+			defaultHierarchy: LocalDateTable_c2488c76-bd79-4377-aca5-df12a1355968.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Finalizacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 15dc6f71-6c0b-47d5-849f-29848ceb4440
+		summarizeBy: none
+		sourceColumn: DataHora_Finalizacao
+
+		variation Variation
+			isDefault
+			relationship: f6fe62ad-09e0-4e71-baa7-c07bc32506c4
+			defaultHierarchy: LocalDateTable_dea41a8a-e509-450d-9887-6f387c3d8ec4.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tempo de Atendimento' = DATEDIFF([DataHora_Criacao], [DataHora_Finalizacao], HOUR)
+		lineageTag: 46938cb3-20e7-4c00-bdda-e4903624a6b5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Tempo de Liberação' = DATEDIFF(Requisicoes[DataHora_Criacao],Requisicoes[DataHora_Liberacao],HOUR)
+		formatString: 0
+		lineageTag: 038c7b86-e9dd-4a5b-aecf-9507bb2397e0
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tempo de Execução' = DATEDIFF(Requisicoes[DataHora_Liberacao],Requisicoes[DataHora_Finalizacao],HOUR)
+		formatString: 0
+		lineageTag: ae6dbfc8-c9a0-455a-b05f-91e009f1f013
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Requisicoes = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\david\Downloads\power bi\task 1\tabelas_Entradas_Saidas e Requisições.xlsx"), null, true),
+				    Requisicoes_Sheet = Fonte{[Item="Requisicoes",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Requisicoes_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"ID_Requisicao", type text}, {"Data_Requisicao", Int64.Type}, {"Atendente", type text}, {"ID_Produto", type text}, {"Filial", type text}, {"Quantidade_Solicitada", Int64.Type}, {"Quantidade_Atendida", Int64.Type}, {"Quantidade_Pendente", Int64.Type}, {"Motivo_Nao_Atendimento", type text}, {"Tempo_Atendimento_dias", Int64.Type}, {"AnoMes", type date}, {"Cliente", type text}, {"DataHora_Criacao", type number}, {"DataHora_Liberacao", type number}, {"DataHora_Finalizacao", type number}, {"Extra_1", Int64.Type}, {"Extra_2", Int64.Type}}),
+				    #"Linhas Classificadas" = Table.Sort(#"Tipo Alterado",{{"Filial", Order.Ascending}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Linhas Classificadas",269),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Linhas Superiores Removidas",{{"Data_Requisicao", type date}, {"DataHora_Criacao", type datetime}, {"DataHora_Liberacao", type datetime}, {"DataHora_Finalizacao", type datetime}}),
+				    #"Erros Removidos" = Table.RemoveRowsWithErrors(#"Tipo Alterado1", {"AnoMes"}),
+				    #"Erros Removidos1" = Table.RemoveRowsWithErrors(#"Erros Removidos", {"Data_Requisicao"}),
+				    #"Erros Removidos2" = Table.RemoveRowsWithErrors(#"Erros Removidos1", {"DataHora_Criacao"}),
+				    #"Erros Removidos3" = Table.RemoveRowsWithErrors(#"Erros Removidos2", {"DataHora_Liberacao"}),
+				    #"Valor Substituído" = Table.ReplaceValue(#"Erros Removidos3","###erro###",null,Replacer.ReplaceValue,{"Atendente"}),
+				    #"Valor Substituído1" = Table.ReplaceValue(#"Valor Substituído","###erro###",null,Replacer.ReplaceValue,{"ID_Produto"}),
+				    #"Valor Substituído2" = Table.ReplaceValue(#"Valor Substituído1",-999,null,Replacer.ReplaceValue,{"Quantidade_Solicitada"}),
+				    #"Valor Substituído3" = Table.ReplaceValue(#"Valor Substituído2",-999,null,Replacer.ReplaceValue,{"Quantidade_Pendente"}),
+				    #"Valor Substituído4" = Table.ReplaceValue(#"Valor Substituído3","###erro###",null,Replacer.ReplaceValue,{"Motivo_Nao_Atendimento"}),
+				    #"Valor Substituído5" = Table.ReplaceValue(#"Valor Substituído4",-999,null,Replacer.ReplaceValue,{"Tempo_Atendimento_dias"}),
+				    #"Linhas Classificadas1" = Table.Sort(#"Valor Substituído5",{{"ID_Requisicao", Order.Descending}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Linhas Classificadas1",{"Extra_2", "Extra_1"}),
+				    #"Colunas Reordenadas" = Table.ReorderColumns(#"Colunas Removidas",{"ID_Requisicao", "Data_Requisicao", "Atendente", "ID_Produto", "Filial", "Quantidade_Solicitada", "Quantidade_Atendida", "Quantidade_Pendente", "Motivo_Nao_Atendimento", "Tempo_Atendimento_dias", "AnoMes", "Cliente", "DataHora_Liberacao", "DataHora_Criacao", "DataHora_Finalizacao"}),
+				    #"Colunas Removidas1" = Table.RemoveColumns(#"Colunas Reordenadas",{"Tempo_Atendimento_dias"})
+				in
+				    #"Colunas Removidas1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

@@ -1,0 +1,48 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+/// Erros nas consultas que foram carregadas em 23/08/2025 15:20:34.
+queryGroup 'Erros na Consulta - 23/08/2025 15:20:34'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation PBI_QueryOrder = ["EntradaNF","SaidaNF","Requisicoes","Erros em EntradaNF","Erros em SaidaNF","Erros em Requisicoes","Estoque","Produtos"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.146.1026.0 (25.08)+fb98ab832373de81dccd5c01cd96306a48477556
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table EntradaNF
+ref table SaidaNF
+ref table Requisicoes
+ref table DateTableTemplate_cc3c3339-a3ad-4e78-9518-5df600f3783f
+ref table LocalDateTable_8dddbfdb-82a2-42d8-9e21-a47fd27f33f3
+ref table LocalDateTable_98d85133-92d5-490e-8344-0cfebcc637cb
+ref table LocalDateTable_a1cd91a3-189e-4bb3-9e03-9c7e027e870e
+ref table LocalDateTable_d081758e-edaf-4c38-a148-420b2ae884d8
+ref table LocalDateTable_8e679b7a-c38c-4197-8a88-06709c98edb3
+ref table LocalDateTable_55941a26-6cff-4f3e-bde6-97186d33edd9
+ref table LocalDateTable_9aa0ab4c-ff1f-48c8-a7c1-2f46af04e631
+ref table LocalDateTable_3fd3912c-591e-4249-9eb5-f029f201766f
+ref table Estoque
+ref table Produtos
+ref table LocalDateTable_3adf3662-f2d3-442b-8da3-daf45ff5e419
+ref table LocalDateTable_c2488c76-bd79-4377-aca5-df12a1355968
+ref table LocalDateTable_dea41a8a-e509-450d-9887-6f387c3d8ec4
+ref table Calendario
+ref table LocalDateTable_74a53531-48b4-485d-b0c7-ede1800dea1b
+ref table LocalDateTable_199fb584-7424-49a1-8593-e2f59d2b1473
+ref table FatorDemanda
+ref table LeadTimeDias
+ref table LocalDateTable_fafdbea6-bcb5-4f39-93eb-98e864773cb0
+ref table LocalDateTable_a8f1a9f9-648d-4d80-9cb4-4194e272a5e3
+
+ref cultureInfo pt-BR
+

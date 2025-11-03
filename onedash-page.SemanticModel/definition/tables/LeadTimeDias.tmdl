@@ -1,0 +1,69 @@
+table LeadTimeDias
+	lineageTag: 7ffcb371-e4c6-4260-95a6-98b67889dd6c
+
+	measure 'Valor LeadTimeDias' = SELECTEDVALUE('LeadTimeDias'[LeadTimeDias], 30)
+		formatString: 0
+		lineageTag: 3ed65ec8-226a-4c30-9280-866b85ad7ac5
+
+	measure Reposição_Simulada = ```
+			
+			VAR LeadTime = SELECTEDVALUE(LeadTimeDias[Valor LeadTimeDias(coluna)], 0)
+			VAR DataSaida = MAX(SaidaNF[Data_Saida])
+			RETURN
+			    DataSaida + LeadTime
+			
+			```
+		formatString: mmmm" de "yyyy
+		lineageTag: 14aa3605-a308-4b5c-a565-71b183d546ae
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure Estoque_Projetado = ```
+			
+			VAR LeadTime = SELECTEDVALUE(LeadTimeDias[Valor LeadTimeDias(coluna)], 0)
+			VAR ConsumoMedioDia = AVERAGEX( SaidaNF, SaidaNF[Quantidade_Saida] )
+			VAR EstoqueAtual = SUM(Estoque[Estoque Atual])
+			RETURN
+			    DIVIDE(EstoqueAtual, ConsumoMedioDia) - LeadTime
+			
+			```
+		lineageTag: db2a344a-5362-4f39-bc6a-fd4846d1ff7c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Estoque_Status = ```
+			
+			VAR Valor = [Estoque_Projetado]
+			RETURN
+			    IF(Valor < 0, "Ruptura", FORMAT(Valor, "0"))
+			
+			
+			```
+		lineageTag: 10fe4280-5c2b-4485-8773-53fa0847963e
+
+	column LeadTimeDias
+		formatString: 0
+		lineageTag: a3e77537-1354-4ccf-9840-e9fdc2908007
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	column 'Valor LeadTimeDias(coluna)' = SELECTEDVALUE('LeadTimeDias'[LeadTimeDias], 30)
+		formatString: 0
+		lineageTag: 7ff15a29-5234-491a-ae53-663524add145
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition LeadTimeDias = calculated
+		mode: import
+		source = GENERATESERIES(1, 60, 1)
+
+	annotation PBI_Id = 63643619497a429c9e946aeb14110c64
+

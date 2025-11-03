@@ -1,0 +1,281 @@
+table SaidaNF
+	lineageTag: ac8961f4-8b93-428c-9d3b-8cdb1a701f8b
+
+	measure Operações = SUM(SaidaNF[Quantidade_Saida])
+		formatString: 0
+		lineageTag: 97642dac-b0f1-4115-ac55-d2115befcdb1
+
+	measure 'Faturamento Total' = SUM(SaidaNF[Valor_Total])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 9a0b6ece-abf4-4d70-ac63-80c703ad1e27
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Ticket Médio' = [Faturamento Total]/[Operações]
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 665a632f-05eb-4568-ac37-689c336811aa
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Faturamento Mês Anterior' = ```
+			
+			CALCULATE(
+			    SUM(SaidaNF[Valor_Total]),
+			    DATEADD(Calendario[Date], -1, MONTH)
+			)
+			
+			
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 6cbe425f-c89b-4577-b8b3-cf7002014721
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% de Variação' = DIVIDE([Faturamento Total]-[Faturamento Mês Anterior],[Faturamento Total],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 5604fb74-ccb6-4eb1-b03d-6ff7bf3a08f7
+
+	measure 'Faturamento Acumulado'
+		lineageTag: 4ee84f48-6352-4a85-b3fd-44e37c2314d1
+
+	measure Media_12_Meses = ```
+			
+			VAR MaxData = MAX(Calendario[Date])
+			RETURN
+			CALCULATE(
+			    AVERAGE(SaidaNF[Faturamento]),
+			    DATESINPERIOD(Calendario[Date], MaxData, -12, MONTH)
+			)
+			
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: b632d2c6-c69d-44ba-b5a5-4a97994a206a
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Projecao_Demanda = [Media_12_Meses] * (1 + 0.05)
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 77002bdd-63e6-4fdf-b82c-7c14689736d7
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Media de Saida' = SUM(SaidaNF[Quantidade_Saida])
+		formatString: 0
+		lineageTag: f1b35487-8859-4ee9-8544-2a3bbb37723e
+
+	column ID_Saida
+		dataType: string
+		lineageTag: 30f6ed14-f045-4df0-81ca-fb4882facf5c
+		summarizeBy: none
+		sourceColumn: ID_Saida
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data_Saida
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 17510216-a6a9-48ce-ae69-3d968f085166
+		summarizeBy: none
+		sourceColumn: Data_Saida
+
+		variation Variation
+			isDefault
+			relationship: aa7df5b1-03a6-4f97-9611-30b192162b1f
+			defaultHierarchy: LocalDateTable_199fb584-7424-49a1-8593-e2f59d2b1473.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column ID_Produto
+		dataType: string
+		lineageTag: 6a8f99cc-0231-4e42-8219-d5568d5c2fba
+		summarizeBy: none
+		sourceColumn: ID_Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Filial
+		dataType: string
+		lineageTag: 15f679ae-a2a2-4048-9229-f535a404a952
+		summarizeBy: none
+		sourceColumn: Filial
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cliente
+		dataType: string
+		lineageTag: e4d4b529-8d21-431b-a5e2-31c7e6a92826
+		summarizeBy: none
+		sourceColumn: Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantidade_Saida
+		dataType: int64
+		formatString: 0
+		lineageTag: 81be8c6d-3ab7-48b3-85ff-76d0a9137daf
+		summarizeBy: sum
+		sourceColumn: Quantidade_Saida
+
+		annotation SummarizationSetBy = Automatic
+
+	column Valor_Total
+		dataType: decimal
+		formatString: 0
+		lineageTag: 31f3d799-eab3-480b-9c2f-d9681bab6ec9
+		summarizeBy: sum
+		sourceColumn: Valor_Total
+
+		annotation SummarizationSetBy = Automatic
+
+	column Atendente
+		dataType: string
+		lineageTag: a1cf3d2d-acab-4992-aca6-a52f33eaa40d
+		summarizeBy: none
+		sourceColumn: Atendente
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Criacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 84e55a68-7399-4662-9336-12e75416832e
+		summarizeBy: none
+		sourceColumn: DataHora_Criacao
+
+		variation Variation
+			isDefault
+			relationship: b483a18c-cf84-4fdc-ab15-b94bf1e1584e
+			defaultHierarchy: LocalDateTable_a1cd91a3-189e-4bb3-9e03-9c7e027e870e.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Finalizacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2864cbc2-9cd9-4137-9629-fa2f5e4298f0
+		summarizeBy: none
+		sourceColumn: DataHora_Finalizacao
+
+		variation Variation
+			isDefault
+			relationship: 08cbfdf4-73f1-4362-814f-a9050645639e
+			defaultHierarchy: LocalDateTable_d081758e-edaf-4c38-a148-420b2ae884d8.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Armazenagem
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 636fc341-8c4d-4ba6-bab7-ec5d7af3fc78
+		summarizeBy: none
+		sourceColumn: DataHora_Armazenagem
+
+		variation Variation
+			isDefault
+			relationship: c823e2b0-d0d5-431b-8595-2bc6f7bc41bb
+			defaultHierarchy: LocalDateTable_98d85133-92d5-490e-8344-0cfebcc637cb.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data = SaidaNF[Data_Saida]
+		formatString: dd/mm/yyyy
+		lineageTag: 46787908-6916-4914-a0ca-79e03281d16a
+		summarizeBy: none
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Faturamento = SUM(SaidaNF[Valor_Total])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: d12f6ec6-cb9b-4ae4-83fe-d4338f2bdb11
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Faturamento Acumulado (Coluna)' = ```
+			
+			VAR FaturamentoAtual = 'SaidaNF'[Valor_Total]
+			RETURN
+			CALCULATE(
+			    SUM('SaidaNF'[Valor_Total]),
+			    FILTER(
+			        'SaidaNF',
+			        'SaidaNF'[Valor_Total] >= FaturamentoAtual
+			    )
+			)
+			
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 896e4bad-2a70-42cb-94a8-c59510d2598f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Classificação ABC' = ```
+			
+			VAR PercentualAcumulado = 'SaidaNF'[Percentual Acumulado]
+			RETURN 
+			    SWITCH(
+			        TRUE(),
+			        PercentualAcumulado <= 0.8, "C",
+			        PercentualAcumulado <= 0.95, "B",
+			        "A"
+			    )
+			
+			```
+		lineageTag: 975a9b9d-a4e5-4fdc-be01-dff95b5d323d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Percentual Acumulado' = DIVIDE (SaidaNF[Faturamento Acumulado (Coluna)], SaidaNF[Quantidade_Saida])
+		dataType: int64
+		formatString: 0%;-0%;0%
+		lineageTag: c5eab23c-4bd4-4c5b-87b8-24cc2fc13db1
+		summarizeBy: min
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
+
+	partition SaidaNF = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\david\Downloads\power bi\task 1\tabelas_Entradas_Saidas e Requisições.xlsx"), null, true),
+				    SaidaNF_Sheet = Fonte{[Item="SaidaNF",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(SaidaNF_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"ID_Saida", type text}, {"Data_Saida", Int64.Type}, {"ID_Produto", type text}, {"Filial", type text}, {"Cliente", type text}, {"Quantidade_Saida", Int64.Type}, {"Valor_Total", Int64.Type}, {"Atendente", type text}, {"DataHora_Criacao", type number}, {"DataHora_Finalizacao", type number}, {"DataHora_Armazenagem", type number}, {"Extra_1", type any}, {"Extra_2", type any}}),
+				    #"Erros Removidos" = Table.RemoveRowsWithErrors(#"Tipo Alterado", {"Data_Saida"}),
+				    #"Erros Removidos1" = Table.RemoveRowsWithErrors(#"Erros Removidos", {"DataHora_Criacao"}),
+				    #"Erros Removidos2" = Table.RemoveRowsWithErrors(#"Erros Removidos1", {"DataHora_Finalizacao"}),
+				    #"Linhas Classificadas" = Table.Sort(#"Erros Removidos2",{{"ID_Saida", Order.Ascending}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Linhas Classificadas",266),
+				    #"Valor Substituído" = Table.ReplaceValue(#"Linhas Superiores Removidas","###erro###",null,Replacer.ReplaceValue,{"ID_Saida"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Valor Substituído",{{"Data_Saida", type date}}),
+				    #"Valor Substituído1" = Table.ReplaceValue(#"Tipo Alterado1","###erro###",null,Replacer.ReplaceValue,{"Filial"}),
+				    #"Valor Substituído2" = Table.ReplaceValue(#"Valor Substituído1",-999,null,Replacer.ReplaceValue,{"Quantidade_Saida"}),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Valor Substituído2",{{"Valor_Total", Currency.Type}, {"DataHora_Criacao", type datetime}, {"DataHora_Finalizacao", type datetime}, {"DataHora_Armazenagem", type datetime}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado2",{"Extra_1", "Extra_2"}),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Colunas Removidas", {"ID_Produto"}),
+				    #"Linhas Classificadas1" = Table.Sort(#"Duplicatas Removidas",{{"ID_Produto", Order.Ascending}})
+				in
+				    #"Linhas Classificadas1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

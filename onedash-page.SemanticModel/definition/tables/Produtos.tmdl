@@ -1,0 +1,99 @@
+table Produtos
+	lineageTag: eff33ce2-7141-4fab-aabb-6bd3dbb68993
+
+	column ID_Produto
+		dataType: string
+		lineageTag: 893d9d53-604c-4dd9-a049-feb6317afc9f
+		summarizeBy: none
+		sourceColumn: ID_Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Produto
+		dataType: string
+		lineageTag: 654bc075-d09e-4995-b720-f87c366016ec
+		summarizeBy: none
+		sourceColumn: Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Platform
+		dataType: string
+		lineageTag: c1f9ed58-606c-49bd-9d9f-847d8a43b599
+		summarizeBy: none
+		sourceColumn: Platform
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6cbfde70-28f5-4395-8405-8c7d861dcd6e
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Genre
+		dataType: string
+		lineageTag: 24128e31-7f90-4072-97c4-9b3d2e4c8b2a
+		summarizeBy: none
+		sourceColumn: Genre
+
+		annotation SummarizationSetBy = Automatic
+
+	column Publisher
+		dataType: string
+		lineageTag: 232bd1f0-b3c6-4330-ac4f-acae1dc89ffa
+		summarizeBy: none
+		sourceColumn: Publisher
+
+		annotation SummarizationSetBy = Automatic
+
+	column Preco_Unitario
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a83ed1c-dc81-4419-ae9e-8e9b5417d925
+		summarizeBy: sum
+		sourceColumn: Preco_Unitario
+
+		annotation SummarizationSetBy = Automatic
+
+	column Preco_compra
+		dataType: decimal
+		lineageTag: c94c4356-fce6-41d2-a25e-2498d7c28ec4
+		summarizeBy: sum
+		sourceColumn: Preco_compra
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column9
+		dataType: string
+		lineageTag: 8665baea-dc90-4b4f-a45d-19e89c134f11
+		summarizeBy: none
+		sourceColumn: Column9
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Produtos = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\david\Downloads\power bi\task 1\tabelas_Estoque e produtos.xlsx"), null, true),
+				    Produtos_Sheet = Fonte{[Item="Produtos",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Produtos_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"ID_Produto", type text}, {"Name", type text}, {"Platform", type text}, {"Year", Int64.Type}, {"Genre", type text}, {"Publisher", type text}, {"Preco_Unitario", Int64.Type}, {"Preco_compra", type number}, {"Column9", type any}}),
+				    #"Linhas Classificadas" = Table.Sort(#"Tipo Alterado",{{"ID_Produto", Order.Ascending}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Linhas Classificadas",488),
+				    #"Linhas Classificadas1" = Table.Sort(#"Linhas Superiores Removidas",{{"ID_Produto", Order.Descending}}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Linhas Classificadas1",{{"Preco_compra", Currency.Type}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado1",{{"Name", "Produto"}})
+				in
+				    #"Colunas Renomeadas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

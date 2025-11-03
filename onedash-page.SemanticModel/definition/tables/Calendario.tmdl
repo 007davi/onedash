@@ -1,0 +1,107 @@
+table Calendario
+	lineageTag: 029606d0-e17e-4682-9493-fd05ae516888
+
+	column Date
+		formatString: dd/mm/yyyy
+		lineageTag: 7e3583eb-13e1-44be-9ca6-28aa5ee7dd97
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 33f09466-d37f-400b-b841-b04112ca8861
+			defaultHierarchy: LocalDateTable_74a53531-48b4-485d-b0c7-ede1800dea1b.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Ano
+		formatString: 0
+		lineageTag: 0b3f2167-1902-4358-8b50-b02721029678
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Ano]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		formatString: 0
+		lineageTag: 798c6349-b9de-45a8-8630-6f051ed9582e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia
+		formatString: 0
+		lineageTag: 46270f4f-e847-4cdd-b7c3-d35b0266fa78
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Dia]
+
+		annotation SummarizationSetBy = Automatic
+
+	column NomeMes
+		lineageTag: d4b5069d-ff08-4a1a-bf02-49fc029a350b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [NomeMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesAno
+		lineageTag: 4b8de8f1-6623-4fcf-b389-dd6b5ba6cc9c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MesAno]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		lineageTag: 63136941-81b6-4113-af7e-55bbd088701a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaSemanaNum
+		formatString: 0
+		lineageTag: b4427aca-db9b-4dd9-8139-419f39753180
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [DiaSemanaNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiaSemanaNome
+		lineageTag: a0a3419f-3475-4cc0-880c-5d1d35033ba7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DiaSemanaNome]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendario = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS (
+				    CALENDAR ( DATE (2023,1,1), DATE (2026,12,31) ),  -- intervalo ajustável
+				    "Ano", YEAR ( [Date] ),
+				    "Mes", MONTH ( [Date] ),
+				    "Dia", DAY ( [Date] ),
+				    "NomeMes", FORMAT ( [Date], "MMMM" ),
+				    "MesAno", FORMAT ( [Date], "MMM/YYYY" ),
+				    "Trimestre", "T" & FORMAT ( QUARTER ( [Date] ), "0" ),
+				    "DiaSemanaNum", WEEKDAY ( [Date], 2 ),   -- 2 = segunda-feira como início
+				    "DiaSemanaNome", FORMAT ( [Date], "dddd" )
+				)
+
+	annotation PBI_Id = c86118f24dc24873a6f4782c54180906
+

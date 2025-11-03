@@ -1,0 +1,113 @@
+relationship a8d2158d-36ed-4bc7-aab0-bc9724ef81f9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Requisicoes.AnoMes
+	toColumn: LocalDateTable_8dddbfdb-82a2-42d8-9e21-a47fd27f33f3.Date
+
+relationship c823e2b0-d0d5-431b-8595-2bc6f7bc41bb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SaidaNF.DataHora_Armazenagem
+	toColumn: LocalDateTable_98d85133-92d5-490e-8344-0cfebcc637cb.Date
+
+relationship b483a18c-cf84-4fdc-ab15-b94bf1e1584e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SaidaNF.DataHora_Criacao
+	toColumn: LocalDateTable_a1cd91a3-189e-4bb3-9e03-9c7e027e870e.Date
+
+relationship 08cbfdf4-73f1-4362-814f-a9050645639e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SaidaNF.DataHora_Finalizacao
+	toColumn: LocalDateTable_d081758e-edaf-4c38-a148-420b2ae884d8.Date
+
+relationship 1c9b256b-5e68-486c-a720-a9cc8a596e2f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Requisicoes.Data_Requisicao
+	toColumn: LocalDateTable_8e679b7a-c38c-4197-8a88-06709c98edb3.Date
+
+relationship f0f9df01-1b17-4040-b10d-1420b6d59bc3
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EntradaNF.DataHora_Armazenagem
+	toColumn: LocalDateTable_55941a26-6cff-4f3e-bde6-97186d33edd9.Date
+
+relationship 58ad4691-5607-4696-958e-98d905026752
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EntradaNF.DataHora_Criacao
+	toColumn: LocalDateTable_9aa0ab4c-ff1f-48c8-a7c1-2f46af04e631.Date
+
+relationship c2c33273-29a5-4fb2-ac2a-bc5036006918
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EntradaNF.DataHora_Finalizacao
+	toColumn: LocalDateTable_3fd3912c-591e-4249-9eb5-f029f201766f.Date
+
+relationship AutoDetected_b37312e0-b8ff-409c-b88c-ab43b41f3e41
+	fromColumn: Estoque.ID_Produto
+	toColumn: Produtos.ID_Produto
+
+relationship cdeac614-b783-4ce8-b7f4-3ef038dfe4ea
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Requisicoes.DataHora_Liberacao
+	toColumn: LocalDateTable_3adf3662-f2d3-442b-8da3-daf45ff5e419.Date
+
+relationship 148825e8-f5ba-4add-bf5e-717178c19724
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Requisicoes.DataHora_Criacao
+	toColumn: LocalDateTable_c2488c76-bd79-4377-aca5-df12a1355968.Date
+
+relationship f6fe62ad-09e0-4e71-baa7-c07bc32506c4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Requisicoes.DataHora_Finalizacao
+	toColumn: LocalDateTable_dea41a8a-e509-450d-9887-6f387c3d8ec4.Date
+
+relationship 21a75914-4124-5b46-682f-3b70fc989637
+	fromColumn: EntradaNF.ID_Produto
+	toColumn: Produtos.ID_Produto
+
+relationship 0f3dfd6d-8d49-64ed-afce-65950a075a16
+	fromColumn: SaidaNF.ID_Produto
+	toColumn: Produtos.ID_Produto
+
+relationship 3fa2c36f-e1d8-dbe9-0a59-ede560aeded3
+	fromColumn: Requisicoes.ID_Produto
+	toColumn: Produtos.ID_Produto
+
+relationship 33f09466-d37f-400b-b841-b04112ca8861
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.Date
+	toColumn: LocalDateTable_74a53531-48b4-485d-b0c7-ede1800dea1b.Date
+
+relationship aa7df5b1-03a6-4f97-9611-30b192162b1f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SaidaNF.Data_Saida
+	toColumn: LocalDateTable_199fb584-7424-49a1-8593-e2f59d2b1473.Date
+
+relationship 43bf716f-ea58-a39d-1baf-c5cb3d730c66
+	fromColumn: SaidaNF.Data
+	toColumn: Calendario.Date
+
+relationship 57dfcd89-62de-6a6e-c69d-0a59a3e286e9
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: Estoque.ID_Produto
+	toColumn: SaidaNF.ID_Produto
+
+relationship 87a4ca09-d36f-9f99-6360-f6e4fe0b8b67
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: Estoque.ID_Produto
+	toColumn: EntradaNF.ID_Produto
+
+relationship d0194add-1d03-4548-b768-3a2d8a797cc5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EntradaNF.Data_Entrada
+	toColumn: LocalDateTable_fafdbea6-bcb5-4f39-93eb-98e864773cb0.Date
+
+relationship 7a2dd423-303d-436a-69f9-1ff8b7b4dc87
+	toCardinality: many
+	fromColumn: SaidaNF.ID_Produto
+	toColumn: EntradaNF.ID_Produto
+
+relationship e56c0f68-d456-405c-a173-595fd2f591f5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EntradaNF.Data_Saida
+	toColumn: LocalDateTable_a8f1a9f9-648d-4d80-9cb4-4194e272a5e3.Date
+

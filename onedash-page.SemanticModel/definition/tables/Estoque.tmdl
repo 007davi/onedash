@@ -1,0 +1,89 @@
+table Estoque
+	lineageTag: 8053996f-ebef-4138-92e3-fefc968b55a2
+
+	measure 'Estoque Atualizado' = SUM(Estoque[Estoque Atual])
+		formatString: #,0
+		lineageTag: 3052ed4e-4e9a-44e5-9e3c-0127bdacaa6f
+
+	measure 'Giro de estoqueM' = [Soma dos itens]-[Estoque atualizado]
+		formatString: 0
+		lineageTag: e29de13d-1562-4076-83b4-515c038eb936
+
+	column ID_Estoque
+		dataType: string
+		lineageTag: bf40626b-355f-4a1d-9ba1-ec142627ae8f
+		summarizeBy: none
+		sourceColumn: ID_Estoque
+
+		annotation SummarizationSetBy = Automatic
+
+	column ID_Produto
+		dataType: string
+		lineageTag: ae5876d1-9f4b-4f2a-9189-2df0ad21febb
+		summarizeBy: none
+		sourceColumn: ID_Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Filial
+		dataType: string
+		lineageTag: f2c69821-6f3a-4f89-a203-65628b15f935
+		summarizeBy: none
+		sourceColumn: Filial
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Estoque Atual'
+		dataType: int64
+		formatString: 0
+		lineageTag: ca675fca-ea08-4207-8e14-7977785d4b05
+		summarizeBy: sum
+		sourceColumn: Estoque Atual
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estoque_Minimo
+		dataType: int64
+		formatString: 0
+		lineageTag: d7263ee7-9457-4492-86f8-70103ca80a49
+		summarizeBy: sum
+		sourceColumn: Estoque_Minimo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estoque_Maximo
+		dataType: int64
+		formatString: 0
+		lineageTag: 31050435-da24-48a1-b7f9-645e40a9cfd8
+		summarizeBy: sum
+		sourceColumn: Estoque_Maximo
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Giro de estoque' = [Soma dos itens]-[Estoque atualizado]
+		formatString: 0
+		lineageTag: 6f71aaa5-55c8-41ee-bcd3-961bc0901d90
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Estoque = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\david\Downloads\power bi\task 1\tabelas_Estoque e produtos.xlsx"), null, true),
+				    Estoque_Sheet = Fonte{[Item="Estoque",Kind="Sheet"]}[Data],
+				    #"Linhas Classificadas" = Table.Sort(Estoque_Sheet,{{"Column1", Order.Ascending}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Linhas Classificadas",1466),
+				    #"Linhas Classificadas1" = Table.Sort(#"Linhas Superiores Removidas",{{"Column1", Order.Descending}}),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Linhas Classificadas1", [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"ID_Estoque", type text}, {"ID_Produto", type text}, {"Filial", type text}, {"Quantidade_Atual", Int64.Type}, {"Estoque_Minimo", Int64.Type}, {"Estoque_Maximo", Int64.Type}, {"Coluna_Vazia_1", type any}, {"Coluna_Vazia_2", type any}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado",{{"Quantidade_Atual", "Estoque Atual"}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Colunas Renomeadas",{"Coluna_Vazia_2", "Coluna_Vazia_1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

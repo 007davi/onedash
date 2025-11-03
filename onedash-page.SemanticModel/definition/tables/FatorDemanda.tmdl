@@ -1,0 +1,28 @@
+table FatorDemanda
+	lineageTag: e2c871ab-5797-430e-afcb-ff1984398787
+
+	measure 'Valor FatorDemanda' = SELECTEDVALUE('FatorDemanda'[FatorDemanda], 0)
+		lineageTag: 37a0cec3-8605-4501-a18a-b0d89d7689df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FatorDemanda
+		lineageTag: 5d3d3182-4d68-42a3-9092-db354962ecf0
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FatorDemanda = calculated
+		mode: import
+		source = GENERATESERIES(-0.5, 1, 0.5)
+
+	annotation PBI_Id = 67eea20404fa41bbb3a040e78a3d512f
+

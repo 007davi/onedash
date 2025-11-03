@@ -1,0 +1,214 @@
+table EntradaNF
+	lineageTag: 1558081b-7c88-49d8-8882-a29c44d4e3c8
+
+	measure 'Soma dos itens' = SUM(EntradaNF[Quantidade_Entrada])
+		formatString: 0
+		lineageTag: 4b10c090-df11-484a-b15a-78f80b2d57e1
+
+	measure 'Soma do Valor Total' = SUM(EntradaNF[Valor_Total])
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: b4a79a35-b554-412d-93e7-c2f7de9896a1
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Custo Medio (uni)' = [Soma do Valor Total]/[Soma dos itens]
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: e23c60d4-0673-4641-b209-bb1d2b3f4f8e
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column ID_Entrada
+		dataType: string
+		lineageTag: a211ea69-e174-459c-be07-5ad28f39aefe
+		summarizeBy: none
+		sourceColumn: ID_Entrada
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data_Entrada
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 08a019e5-49ee-4b86-be1f-c301a8310df7
+		summarizeBy: none
+		sourceColumn: Data_Entrada
+
+		variation Variation
+			isDefault
+			relationship: d0194add-1d03-4548-b768-3a2d8a797cc5
+			defaultHierarchy: LocalDateTable_fafdbea6-bcb5-4f39-93eb-98e864773cb0.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column ID_Produto
+		dataType: string
+		lineageTag: 5ed65f20-bff1-4df7-af6b-ccc059e75c8b
+		summarizeBy: none
+		sourceColumn: ID_Produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Filial
+		dataType: string
+		lineageTag: 5fab5bbc-d99e-4636-b053-5bcaca1a5c37
+		summarizeBy: none
+		sourceColumn: Filial
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantidade_Entrada
+		dataType: int64
+		formatString: 0
+		lineageTag: 00d09f8b-5604-4130-ad2d-58d8c4060fac
+		summarizeBy: sum
+		sourceColumn: Quantidade_Entrada
+
+		annotation SummarizationSetBy = Automatic
+
+	column Valor_Total
+		dataType: decimal
+		formatString: "R$"#,0.00;-"R$"#,0.00;"R$"#,0.00
+		lineageTag: 6cb1dacf-cee3-4541-b7c2-9bb4475bc56b
+		summarizeBy: sum
+		sourceColumn: Valor_Total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-BR"}
+
+	column Fornecedor
+		dataType: string
+		lineageTag: 370291c6-8a48-4378-a666-13c9e9692d8f
+		summarizeBy: none
+		sourceColumn: Fornecedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column Atendente
+		dataType: string
+		lineageTag: 79cef0b4-e76f-4daa-82ca-5ef00922629a
+		summarizeBy: none
+		sourceColumn: Atendente
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Criacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8b09f295-a223-45c6-b17f-cccaf513d522
+		summarizeBy: none
+		sourceColumn: DataHora_Criacao
+
+		variation Variation
+			isDefault
+			relationship: 58ad4691-5607-4696-958e-98d905026752
+			defaultHierarchy: LocalDateTable_9aa0ab4c-ff1f-48c8-a7c1-2f46af04e631.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Finalizacao
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3b91a1b4-00a4-4781-b21d-bab73bc65584
+		summarizeBy: none
+		sourceColumn: DataHora_Finalizacao
+
+		variation Variation
+			isDefault
+			relationship: c2c33273-29a5-4fb2-ac2a-bc5036006918
+			defaultHierarchy: LocalDateTable_3fd3912c-591e-4249-9eb5-f029f201766f.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataHora_Armazenagem
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 47d331e6-77cf-400b-8cf1-202431601ad6
+		summarizeBy: none
+		sourceColumn: DataHora_Armazenagem
+
+		variation Variation
+			isDefault
+			relationship: f0f9df01-1b17-4040-b10d-1420b6d59bc3
+			defaultHierarchy: LocalDateTable_55941a26-6cff-4f3e-bde6-97186d33edd9.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tempo de Processamento' = DATEDIFF([DataHora_Criacao],EntradaNF[DataHora_Finalizacao],HOUR)
+		formatString: 0
+		lineageTag: f19c9441-095b-451a-a561-1836ee59a63d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tempo de Armazenagem' = DATEDIFF(EntradaNF[DataHora_Finalizacao],EntradaNF[DataHora_Armazenagem],HOUR)
+		formatString: 0
+		lineageTag: f60a3f07-1f47-46ca-a9ce-1e560b732d03
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data_Saida
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c9ba8bcc-cc57-49f3-8570-e2c1c200b96b
+		summarizeBy: none
+		sourceColumn: Data_Saida
+
+		variation Variation
+			isDefault
+			relationship: e56c0f68-d456-405c-a173-595fd2f591f5
+			defaultHierarchy: LocalDateTable_a8f1a9f9-648d-4d80-9cb4-4194e272a5e3.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LeadTime = DATEDIFF(EntradaNF[Data_Entrada],EntradaNF[Data_Saida],DAY)
+		formatString: 0
+		lineageTag: 150989eb-b1b1-4ff7-9383-718bbfa61037
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition EntradaNF = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\david\Downloads\power bi\task 1\tabelas_Entradas_Saidas e Requisições.xlsx"), null, true),
+				    EntradaNF_Sheet = Fonte{[Item="EntradaNF",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(EntradaNF_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"ID_Entrada", type text}, {"Data_Entrada", type date}, {"ID_Produto", type text}, {"Filial", type text}, {"Quantidade_Entrada", Int64.Type}, {"Valor_Total", type number}, {"Fornecedor", type text}, {"Atendente", type text}, {"DataHora_Criacao", type datetime}, {"DataHora_Finalizacao", type number}, {"DataHora_Armazenagem", type number}, {"Extra_1", type any}, {"Extra_2", type any}}),
+				    #"Erros Removidos" = Table.RemoveRowsWithErrors(#"Tipo Alterado", {"DataHora_Criacao"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Erros Removidos",{{"Data_Entrada", type date}}),
+				    #"Erros Removidos1" = Table.RemoveRowsWithErrors(#"Tipo Alterado1", {"Data_Entrada"}),
+				    #"Linhas Classificadas" = Table.Sort(#"Erros Removidos1",{{"ID_Entrada", Order.Ascending}}),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Linhas Classificadas",{{"DataHora_Finalizacao", type datetime}, {"DataHora_Armazenagem", type datetime}, {"Valor_Total", Currency.Type}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Tipo Alterado2",270),
+				    #"Linhas Superiores Removidas1" = Table.Skip(#"Linhas Superiores Removidas",1),
+				    #"Linhas Classificadas1" = Table.Sort(#"Linhas Superiores Removidas1",{{"Filial", Order.Ascending}}),
+				    #"Valor Substituído" = Table.ReplaceValue(#"Linhas Classificadas1","###erro###",null,Replacer.ReplaceValue,{"Filial"}),
+				    #"Valor Substituído1" = Table.ReplaceValue(#"Valor Substituído","###erro###",null,Replacer.ReplaceValue,{"ID_Entrada"}),
+				    #"Valor Substituído2" = Table.ReplaceValue(#"Valor Substituído1","###erro###",null,Replacer.ReplaceValue,{"ID_Produto"}),
+				    #"Valor Substituído3" = Table.ReplaceValue(#"Valor Substituído2",-999,null,Replacer.ReplaceValue,{"Quantidade_Entrada"}),
+				    #"Valor Substituído4" = Table.ReplaceValue(#"Valor Substituído3","###erro###",null,Replacer.ReplaceValue,{"Fornecedor"}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Valor Substituído4",{"Extra_1", "Extra_2"}),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Colunas Removidas", {"ID_Produto"}),
+				    #"Linhas em Branco Removidas" = Table.SelectRows(#"Duplicatas Removidas", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Linhas Classificadas2" = Table.Sort(#"Linhas em Branco Removidas",{{"ID_Produto", Order.Ascending}}),
+				    #"Linhas em Branco Removidas1" = Table.SelectRows(#"Linhas Classificadas2", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Erros Removidos2" = Table.RemoveRowsWithErrors(#"Linhas em Branco Removidas1", {"ID_Produto"}),
+				    #"Linhas Superiores Removidas2" = Table.Skip(#"Erros Removidos2",1),
+				    #"Linhas Classificadas3" = Table.Sort(#"Linhas Superiores Removidas2",{{"Data_Entrada", Order.Ascending}}),
+				    #"Consultas Mescladas" = Table.NestedJoin(#"Linhas Classificadas3", {"ID_Produto"}, SaidaNF, {"ID_Produto"}, "SaidaNF", JoinKind.LeftOuter),
+				    #"SaidaNF Expandido" = Table.ExpandTableColumn(#"Consultas Mescladas", "SaidaNF", {"Data_Saida"}, {"Data_Saida"})
+				in
+				    #"SaidaNF Expandido"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

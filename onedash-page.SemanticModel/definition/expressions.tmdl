@@ -1,0 +1,72 @@
+expression 'Erros em EntradaNF' =
+		let
+		Fonte = EntradaNF,
+		  #"Incompatibilidades de Tipo Detectadas" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Fonte, Table.ColumnsOfType(Fonte, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "O tipo do valor não corresponde ao tipo da coluna.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Fonte, pairs),
+		  #"Índice Adicionado" = Table.AddIndexColumn(#"Incompatibilidades de Tipo Detectadas", "Número da Linha" ,1),
+		  #"Erros Mantidos" = Table.SelectRowsWithErrors(#"Índice Adicionado", {"ID_Entrada", "Data_Entrada", "ID_Produto", "Filial", "Quantidade_Entrada", "Valor_Total", "Fornecedor", "Atendente", "DataHora_Criacao", "DataHora_Finalizacao", "DataHora_Armazenagem", "Extra_1", "Extra_2"}),
+		  #"Colunas Reordenadas" = Table.ReorderColumns(#"Erros Mantidos", {"Número da Linha", "ID_Entrada", "Data_Entrada", "ID_Produto", "Filial", "Quantidade_Entrada", "Valor_Total", "Fornecedor", "Atendente", "DataHora_Criacao", "DataHora_Finalizacao", "DataHora_Armazenagem", "Extra_1", "Extra_2"}),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Reordenadas",{{"DataHora_Criacao", type datetime}})
+		in
+		  #"Tipo Alterado"
+	lineageTag: 0158af11-8909-4f31-999b-4ebc0a4952a4
+	queryGroup: 'Erros na Consulta - 23/08/2025 15:20:34'
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
+expression 'Erros em SaidaNF' =
+		let
+		Fonte = SaidaNF,
+		  #"Incompatibilidades de Tipo Detectadas" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Fonte, Table.ColumnsOfType(Fonte, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "O tipo do valor não corresponde ao tipo da coluna.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Fonte, pairs),
+		  #"Índice Adicionado" = Table.AddIndexColumn(#"Incompatibilidades de Tipo Detectadas", "Número da Linha" ,1),
+		  #"Erros Mantidos" = Table.SelectRowsWithErrors(#"Índice Adicionado", {"ID_Saida", "Data_Saida", "ID_Produto", "Filial", "Cliente", "Quantidade_Saida", "Valor_Total", "Atendente", "DataHora_Criacao", "DataHora_Finalizacao", "DataHora_Armazenagem", "Extra_1", "Extra_2"}),
+		  #"Colunas Reordenadas" = Table.ReorderColumns(#"Erros Mantidos", {"Número da Linha", "ID_Saida", "Data_Saida", "ID_Produto", "Filial", "Cliente", "Quantidade_Saida", "Valor_Total", "Atendente", "DataHora_Criacao", "DataHora_Finalizacao", "DataHora_Armazenagem", "Extra_1", "Extra_2"}),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Reordenadas",{{"Data_Saida", type date}, {"DataHora_Criacao", type datetime}, {"DataHora_Finalizacao", type datetimezone}})
+		in
+		    #"Tipo Alterado"
+	lineageTag: b1250a4d-9674-4180-8328-b8e3cdedccf4
+	queryGroup: 'Erros na Consulta - 23/08/2025 15:20:34'
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
+expression 'Erros em Requisicoes' =
+		let
+		Fonte = Requisicoes,
+		  #"Incompatibilidades de Tipo Detectadas" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Fonte, Table.ColumnsOfType(Fonte, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "O tipo do valor não corresponde ao tipo da coluna.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Fonte, pairs),
+		  #"Índice Adicionado" = Table.AddIndexColumn(#"Incompatibilidades de Tipo Detectadas", "Número da Linha" ,1),
+		  #"Erros Mantidos" = Table.SelectRowsWithErrors(#"Índice Adicionado", {"ID_Requisicao", "Data_Requisicao", "Atendente", "ID_Produto", "Filial", "Quantidade_Solicitada", "Quantidade_Atendida", "Quantidade_Pendente", "Motivo_Nao_Atendimento", "Tempo_Atendimento_dias", "AnoMes", "Cliente", "DataHora_Criacao", "DataHora_Liberacao", "DataHora_Finalizacao", "Extra_1", "Extra_2"}),
+		  #"Colunas Reordenadas" = Table.ReorderColumns(#"Erros Mantidos", {"Número da Linha", "ID_Requisicao", "Data_Requisicao", "Atendente", "ID_Produto", "Filial", "Quantidade_Solicitada", "Quantidade_Atendida", "Quantidade_Pendente", "Motivo_Nao_Atendimento", "Tempo_Atendimento_dias", "AnoMes", "Cliente", "DataHora_Criacao", "DataHora_Liberacao", "DataHora_Finalizacao", "Extra_1", "Extra_2"}),
+		    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Reordenadas",{{"Data_Requisicao", type date}, {"AnoMes", type date}, {"DataHora_Criacao", type datetimezone}, {"DataHora_Liberacao", type datetime}})
+		in
+		  #"Tipo Alterado"
+	lineageTag: 82a84c91-1d12-4616-bc45-45c1291299b7
+	queryGroup: 'Erros na Consulta - 23/08/2025 15:20:34'
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
